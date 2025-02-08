@@ -1,0 +1,98 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+void tampilkanPeraturan() {
+    cout << "Peraturan Permainan:\n";
+    cout << "1. Anda akan diberikan kata yang harus ditebak.\n";
+    cout << "2. Anda memiliki 5 kesempatan untuk menebak huruf.\n";
+    cout << "3. Setiap tebakan yang benar akan mengisi huruf yang sesuai.\n";
+    cout << "4. Jika Anda menebak kata dengan benar sebelum kesempatan habis, Anda menang.\n";
+    cout << "5. Jika Anda kehabisan kesempatan dan belum berhasil menebak kata, Anda kalah.\n";
+    cout << "Selamat bermain!\n";
+}
+
+void pilihTingkatan() {
+    int level;
+    cout << "Pilih tingkatan level permainan:\n";
+    cout << "1. Easy\n";
+    cout << "2. Medium\n";
+    cout << "3. Hard\n";
+    cout << "Masukkan pilihan level (1/2/3): ";
+    cin >> level;
+
+    string kata;
+    switch (level) {
+        case 1:
+            kata = "ANDI";
+            cout << "Anda memilih level Easy. Kata yang harus ditebak adalah: _ _ _ _\n";
+            break;
+        case 2:
+            kata = "SATRIA";
+            cout << "Anda memilih level Medium. Kata yang harus ditebak adalah: _ _ _ _ _ _\n";
+            break;
+        case 3:
+            kata = "PROGRAMING";
+            cout << "Anda memilih level Hard. Kata yang harus ditebak adalah: _ _ _ _ _ _ _ _ _ _\n";
+            break;
+        default:
+            cout << "Pilihan tidak valid. Program akan keluar.\n";
+            return;
+    }
+
+    // Menebak kata
+    string tebakan(kata.length(), '_');
+    int kesempatan = 5;
+    char huruf;
+    bool berhasil = false;
+
+    while (kesempatan > 0 && !berhasil) {
+        cout << "\nTebakan kata: " << tebakan << endl;
+        cout << "Kesempatan tersisa: " << kesempatan << endl;
+        cout << "Masukkan huruf yang Anda tebak: ";
+        cin >> huruf;
+
+        bool ada_perubahan = false;
+        // Cek apakah huruf yang dimasukkan ada dalam kata
+        for (int i = 0; i < kata.length(); ++i) {
+            if (kata[i] == huruf && tebakan[i] == '_') {
+                tebakan[i] = huruf;
+                ada_perubahan = true;
+            }
+        }
+
+        if (ada_perubahan) {
+            cout << "Tebakan benar!\n";
+        } else {
+            kesempatan--;
+            cout << "Tebakan salah. Anda kehilangan satu kesempatan.\n";
+        }
+
+        // Cek apakah pemain berhasil menebak semua huruf
+        if (tebakan == kata) {
+            berhasil = true;
+            cout << "Selamat! Anda berhasil menebak kata: " << kata << endl;
+        }
+    }
+
+    if (!berhasil) {
+        cout << "Maaf, Anda kehabisan kesempatan. Kata yang benar adalah: " << kata << endl;
+    }
+}
+
+int main() {
+    char pilihan;
+
+    cout << "Apakah Anda ingin melihat peraturan permainan? (y/n): ";
+    cin >> pilihan;
+
+    if (pilihan == 'y' || pilihan == 'Y') {
+        tampilkanPeraturan();
+    } else if (pilihan == 'n' || pilihan == 'N') {
+        pilihTingkatan();
+    } else {
+        cout << "Pilihan tidak valid. Program akan keluar.\n";
+    }
+
+    return 0;
+}
