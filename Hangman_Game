@@ -1,1 +1,92 @@
+#include <iostream>
+#include <string>
 
+std::string kataYangHarusDitebak;
+
+void tampilkanPeraturanGame(){
+    std::cout << "##############################################################################################" << std::endl;
+    std::cout << "==================================PERATURAN GAME==============================================" << std::endl;
+    std::cout << "##############################################################################################" << std::endl;
+
+    std::cout << "1. Pilih Tingkatan Game\n";
+    std::cout << "2. Pada Setiap Tingkatan, Anda Memiliki 5 Kali Kesempatan Untuk Menebak\n";
+    std::cout << "3. Program Akan Memilih Kata Yang Harus Ditebak Sesuai Dengan Tingkatan Game Yang Anda Pilih\n";
+    std::cout << "4. Tebak Kata Tersebut Dengan Cara Memasukan Huruf Satu Per Satu\n";
+    std::cout << "5. Jika Kesempatan Telah Habis, Program Akan Menampilkan Kata Yang Harus Ditebak\n";
+    std::cout << "6. Selamat Bermain :)\n";
+    std::cout << std::endl;
+}
+
+
+void pilihTingkatan(){
+    int level;
+    std::cout << "Pilih Tingkatan Game\n";
+    std::cout << "====================\n";
+    std::cout << "1. EASY\n";
+    std::cout << "2. MEDIUM\n";
+    std::cout << "3. HARD\n";
+    std::cout << std::endl;
+    std::cout<< "Pilih Tingkatan Game :";
+    std::cin >> level;
+
+    switch (level){
+    case 1:
+        kataYangHarusDitebak = "ANDI";
+        std::cout << "Kata Yang Harus Ditebak Adalah '_ _ _ _' " << std::endl;
+        break;
+    case 2:
+        kataYangHarusDitebak = "SATRIA";
+        std::cout << "Kata Yang Harus Ditebak Adalah '_ _ _ _ _ _' " << std::endl;
+        break;
+    case 3:
+        kataYangHarusDitebak = "PROGRAMING";
+        std::cout << "Kata Yang Harus Ditebak Adalah '_ _ _ _ _ _ _ _ _ _' " << std::endl;
+        break;
+    default:
+        std::cout << "Pilihan Tidak Valid" << std::endl;
+        std::cout << "Pilih 0 Untuk Kembali " << std::endl;
+        std::cin >> level;
+    }
+
+    int kesempatan = 5;
+    std::string kata (kataYangHarusDitebak.length(), '_ ');
+}
+
+void startGame(){
+
+
+}
+
+
+
+int main(){
+    int pilih;
+
+    std::cout << "######################################################\n";
+    std::cout << "============SELAMAT DATANG DI HANGMAN GAME============\n";
+    std::cout << "######################################################\n";
+    std::cout << std::endl;
+    do
+    {
+        std::cout << "1) Tampilkan Peraturan Permainan\n";
+        std::cout << "2) Lanjut Ke Permainan\n";
+        std::cout << "3) Exit\n";
+        std::cout << std::endl;
+        std::cout << "Pilih Nomor : " << std::endl;
+        std::cin >> pilih;
+
+        if (pilih == 1){
+            tampilkanPeraturanGame();
+        } else if (pilih == 2){
+            pilihTingkatan();
+            startGame();
+        } else if (pilih == 3){
+            std::cout << "ANDA KELUAR DARI PERMAINAN\n";
+            return 0;
+        }else{
+            std::cout << "Pilihan Tidak Valid" << std::endl;
+            std::cout << "Pilih 0 Untuk Kembali " << std::endl;
+            std::cin >> pilih;
+        }
+    }while (true);
+}
