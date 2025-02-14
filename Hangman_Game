@@ -1,92 +1,159 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include  <random>
+#include <algorithm>
 
-std::string kataYangHarusDitebak;
+void tampilkanPeraturan(){
+    std::cout << "1) PILIH TINGKAT KESULITAN PERMAINAN\n";
+    std::cout << "2) KATA AKAN DIBERIKAN SESUAI DENGAN TINGKKAT KESULITAN YANG DIPILIH\n";
+    std::cout << "3) TEBAK KATA DENGAN MEMASUKAN HURUF SATU PER SATU\n";
+    std::cout << "4) ISI DENGAN HURUF KAPITAL (HURUF KECIL AKAN DIANGGAP SALAH MESKIPUN HURUF TERSEBUT ADA DALAM KATA YANG SEDANG DITEBAK)\n";
+    std::cout << "5) JAWABAN TIDAK AKAN DITAMPILAKN JIKA PEMAIN KEHABISAN KESEMPATAN\n";
+    std::cout << "6) JAWABAN HANYA AKAN DITAMPILKAN APABILA PEMAIN BERHASIL MENEBAK SELURUH KATA\n";
+    std::cin.ignore();
+    std::cout << "\nKLIK ENTER UNTUK MELANJUTKAN\n"; 
+    std::cin.get();
+}
 
-void tampilkanPeraturanGame(){
-    std::cout << "##############################################################################################" << std::endl;
-    std::cout << "==================================PERATURAN GAME==============================================" << std::endl;
-    std::cout << "##############################################################################################" << std::endl;
+void pilihKataRandom(std::string kata[], int jumlahKata){
+    std::random_device kataRandom;
+    std::mt19937 gen(kataRandom());
+    std::shuffle (kata, kata + jumlahKata, gen);
+}
 
-    std::cout << "1. Pilih Tingkatan Game\n";
-    std::cout << "2. Pada Setiap Tingkatan, Anda Memiliki 5 Kali Kesempatan Untuk Menebak\n";
-    std::cout << "3. Program Akan Memilih Kata Yang Harus Ditebak Sesuai Dengan Tingkatan Game Yang Anda Pilih\n";
-    std::cout << "4. Tebak Kata Tersebut Dengan Cara Memasukan Huruf Satu Per Satu\n";
-    std::cout << "5. Jika Kesempatan Telah Habis, Program Akan Menampilkan Kata Yang Harus Ditebak\n";
-    std::cout << "6. Selamat Bermain :)\n";
+void tampilkanKata(const std::string& kata, const std::vector<bool>& tebakan){
+    for(size_t i = 0; i < kata.length(); i++){
+        if(tebakan[i]){
+            std::cout << kata[i] << "" ;
+        }else{
+            std::cout << "_ ";
+        }
+    }
     std::cout << std::endl;
 }
 
-
-void pilihTingkatan(){
-    int level;
-    std::cout << "Pilih Tingkatan Game\n";
-    std::cout << "====================\n";
-    std::cout << "1. EASY\n";
-    std::cout << "2. MEDIUM\n";
-    std::cout << "3. HARD\n";
+int startGame(std::string kata){
+    int kesempatan = 6;
+    std::vector <bool> tebakan(kata.length(), false);
+    char jawab;
+    
+    std::cout << "ANDA MEMILIKI " << kesempatan << " KESEMPATAN UNTUK MENEBAK\n";
+    std::cout << "TEBAK KATA BERIKUT ! \n";
+    
+    while(kesempatan > 0){
+        tampilkanKata(kata, tebakan);
+        std::cout << "Masukan Huruf : ";
+        std::cin >> jawab;
+        
+        bool cekJawaban = true;
+        for(size_t i = 0; i < kata.length(); i++){
+            if(kata[i] == jawab){
+                cekJawaban = false;
+                tebakan[i] = true;
+            }
+        }
+        if(cekJawaban){
+            kesempatan--;
+            std::cout << "\nTEBAKAN SALAH\n";
+            std::cout << "TERSISA " << kesempatan << " KESEMPATAN\n";
+        }
+        
+        bool terjawab = true;
+        for(int status : tebakan){
+            if(!status){
+                terjawab = false;
+                break;
+            }
+        }
+        if(terjawab){
+            tampilkanKata(kata,tebakan);
+            std::cout << "SELAMAT ! ANDA BERHASIL MENEBAK KATA '" << kata << "'\n";
+            std::cout << "=======================\n";
+            std::cout << "=====!KEMENANGAN!======\n";
+            std::cout << "=======================\n";
+            return true;
+        }
+    }
+        std::cout << "KESEMPATAN MENJAWAB TELAH HABIS :(\n";
+        std::cout << "SILAHKAN COBA LAGI\n";
+        return false;
+}
+int main(){
+    
+    int pilih;
+    
+    std::cout << "##########################################################\n";
+    std::cout << "==============SELAMAT DATANG DI HANGMAN GAME==============\n";
+    std::cout << "##########################################################\n";
     std::cout << std::endl;
-    std::cout<< "Pilih Tingkatan Game :";
+    std::cout << "1] PERATURAN PERMAINAN\n";
+    std::cout << "2] LANJUT KE PERMAINAN\n";
+    std::cout << std::endl;
+    std::cout << "PILIH OPSI : ";
+    std::cin >> pilih;
+    
+    do{
+    if (pilih == 1){
+        tampilkanPeraturan();
+        break;
+    } else if (pilih !=1 && pilih != 2) {
+        std::cout << "Tidak Ada Pilihan Dengan Nomor " << pilih << "\n";
+        continue;
+    }
+        
+    }while(pilih != 2);
+    
+    do{
+        int level;
+        std::string kata1[]= {"CODE","DATA","BYTE","DISK","CORE"};
+        std::string kata2[]= {"MEMORY","MONITOR","BACKUP","SERVER","LAPTOP"};
+        std::string kata3[]= {"KEYBOARD","PROGRAMING","DATABASE","COMPUTER","PROCESSOR"};
+        std::string* pilihanKata;
+        int size;
+        
+    std::cout << "PILIH TINGKATAN GAME\n";
+    std::cout << "====================\n";
+    std::cout << "1] EASY   (4 HURUF)\n";
+    std::cout << "2] MEDIUM (6-7 HURUF)\n";
+    std::cout << "3] HARD   (8-10 HURUF)\n";
+    std::cout << std::endl;
+    std::cout << "PILIH TINGKAT KESULITAN : ";
     std::cin >> level;
-
-    switch (level){
-    case 1:
-        kataYangHarusDitebak = "ANDI";
-        std::cout << "Kata Yang Harus Ditebak Adalah '_ _ _ _' " << std::endl;
+    
+    switch(level){
+    case 1: 
+        pilihanKata = kata1;
+        size = sizeof (kata1) / sizeof (kata1[0]);
         break;
     case 2:
-        kataYangHarusDitebak = "SATRIA";
-        std::cout << "Kata Yang Harus Ditebak Adalah '_ _ _ _ _ _' " << std::endl;
+        pilihanKata = kata2;
+        size = sizeof (kata2) / sizeof (kata2[0]);
         break;
     case 3:
-        kataYangHarusDitebak = "PROGRAMING";
-        std::cout << "Kata Yang Harus Ditebak Adalah '_ _ _ _ _ _ _ _ _ _' " << std::endl;
+        pilihanKata = kata3;
+        size = sizeof (kata3) / sizeof (kata3[0]);
         break;
     default:
-        std::cout << "Pilihan Tidak Valid" << std::endl;
-        std::cout << "Pilih 0 Untuk Kembali " << std::endl;
-        std::cin >> level;
+        std::cout << "Tidak Ada Pilihan Dengan Nomor " << level << "\n";
+        continue;
     }
-
-    int kesempatan = 5;
-    std::string kata (kataYangHarusDitebak.length(), '_ ');
-}
-
-void startGame(){
-
-
-}
-
-
-
-int main(){
-    int pilih;
-
-    std::cout << "######################################################\n";
-    std::cout << "============SELAMAT DATANG DI HANGMAN GAME============\n";
-    std::cout << "######################################################\n";
+    pilihKataRandom(pilihanKata, size);
+    std::string kataPilihan = pilihanKata[0];
+    startGame(kataPilihan);
+    
+    int ulang;
+    std::cout << "\nAPAKAH INGIN MENGULANG / MELANJUTKAN PERMAINAN ? \n";
+    std::cout << "1] YA\n";
+    std::cout << "2] TIDAK\n";
     std::cout << std::endl;
-    do
-    {
-        std::cout << "1) Tampilkan Peraturan Permainan\n";
-        std::cout << "2) Lanjut Ke Permainan\n";
-        std::cout << "3) Exit\n";
-        std::cout << std::endl;
-        std::cout << "Pilih Nomor : " << std::endl;
-        std::cin >> pilih;
-
-        if (pilih == 1){
-            tampilkanPeraturanGame();
-        } else if (pilih == 2){
-            pilihTingkatan();
-            startGame();
-        } else if (pilih == 3){
-            std::cout << "ANDA KELUAR DARI PERMAINAN\n";
-            return 0;
-        }else{
-            std::cout << "Pilihan Tidak Valid" << std::endl;
-            std::cout << "Pilih 0 Untuk Kembali " << std::endl;
-            std::cin >> pilih;
-        }
-    }while (true);
+    std::cout << "Pilih Opsi : ";
+    std::cin >> ulang;
+    
+    if (ulang != 1){
+        break;
+    }
+    }while(true);
+    std::cout << "TERIMA KASIH TELAH BERMAIN :)";
+    return 0;
 }
