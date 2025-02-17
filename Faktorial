@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+void faktorial(int &x){
+    int hasil = 1;
+    for(int i = 1;i <= x; i++){
+        hasil *= i;
+    }
+    while(x > 1){
+        std::cout << x <<  "×";
+        x--;
+    }
+    cout << "1 = " << hasil;
+}
+
+
+int main(){
+    int angka;
+    cout << "Masukan Angka :";
+    cin >> angka;
+    faktorial(angka);
+}
